@@ -8,8 +8,8 @@ import gps.api.GPSState;
 
 public class GPSStateImpl implements GPSState {
 	
-	public static int COLUMN_SIZE = 8;
-	public static int ROW_SIZE = 8;
+//	public static int COLUMN_SIZE = 8;
+//	public static int ROW_SIZE = 8;
 	
 	private List<Position> board = new ArrayList<Position>();
 	

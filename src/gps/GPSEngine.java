@@ -38,7 +38,7 @@ public abstract class GPSEngine {
 				GPSNode currentNode = open.get(0);
 				closed.add(currentNode);
 				open.remove(0);
-				if (isGoal(currentNode)) {
+				if (problem.isGoal(currentNode.getState())) {
 					finished = true;
 					System.out.println(currentNode.getSolution());
 					System.out.println("Expanded nodes: " + explosionCounter);
@@ -56,10 +56,10 @@ public abstract class GPSEngine {
 		}
 	}
 
-	private  boolean isGoal(GPSNode currentNode) {
-		return currentNode.getState() != null
-				&& currentNode.getState().compare(problem.getGoalState());
-	}
+//	private  boolean isGoal(GPSNode currentNode) {
+//		return currentNode.getState() != null
+//				&& currentNode.getState().compare(problem.getGoalState());
+//	}
 
 	private  boolean explode(GPSNode node) {
 		if(problem.getRules() == null){

@@ -66,13 +66,13 @@ public class GPSRuleImpl implements GPSRule{
 	
 	private boolean queenInSameDiagonal(List<Position> board){
 		Position p;
-		for(int i= queen.getRow(), j=queen.getCol(); i>=0 && j< GPSStateImpl.COLUMN_SIZE; i--, j++){
+		for(int i= queen.getRow(), j=queen.getCol(); i>=0 && j< GPSProblemImpl.COLUMN_SIZE; i--, j++){
 			p= new Position(i,j);
 			if(board.contains(p)){
 				return true;
 			}
 		}
-		for(int i= queen.getRow(), j=queen.getCol(); i<GPSStateImpl.ROW_SIZE && j< GPSStateImpl.COLUMN_SIZE; i++, j++){
+		for(int i= queen.getRow(), j=queen.getCol(); i<GPSProblemImpl.ROW_SIZE && j< GPSProblemImpl.COLUMN_SIZE; i++, j++){
 			p= new Position(i,j);
 			if(board.contains(p)){
 				return true;
@@ -84,7 +84,7 @@ public class GPSRuleImpl implements GPSRule{
 				return true;
 			}
 		}
-		for(int i= queen.getRow(), j=queen.getCol(); i<GPSStateImpl.ROW_SIZE && j>=0; i++, j--){
+		for(int i= queen.getRow(), j=queen.getCol(); i<GPSProblemImpl.ROW_SIZE && j>=0; i++, j--){
 			p= new Position(i,j);
 			if(board.contains(p)){
 				return true;
