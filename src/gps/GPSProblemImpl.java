@@ -1,10 +1,11 @@
 package gps;
 
-import java.util.List;
-
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GPSProblemImpl implements GPSProblem {
 
@@ -19,8 +20,14 @@ public class GPSProblemImpl implements GPSProblem {
 
 	@Override
 	public List<GPSRule> getRules() {
-		// TODO Auto-generated method stub
-		return null;
+		List<GPSRule> rules = new ArrayList<GPSRule>();
+		for (int i = 0; i < ROW_SIZE; i++) {
+			for (int j = 0; j <COLUMN_SIZE; j++) {
+				GPSRuleImpl rule = new GPSRuleImpl(new Position(i,j));
+				rules.add(rule);
+			}
+		}
+		return rules;
 	}
 
 	@Override
