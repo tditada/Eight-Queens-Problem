@@ -1,19 +1,16 @@
 package gps;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gps.api.GPSRule;
 import gps.api.GPSState;
 import gps.exception.NotAppliableException;
 
-public class GPSRuleImpl implements GPSRule{
+public class GPSRuleImpl implements GPSRule {
 	private Position queen;
-	
+
 	public GPSRuleImpl(Position queen) {
-		this.queen=queen;
+		this.queen = queen;
 	}
-	
+
 	@Override
 	public Integer getCost() {
 		return 1;
@@ -21,76 +18,86 @@ public class GPSRuleImpl implements GPSRule{
 
 	@Override
 	public String getName() {
-		return "";
+		return "queen in:x=" + queen.getRow() + " y=" + queen.getCol();
 	}
 
+	// ¿Esta bien haber tenido que poner un limite para el estado final?
 	@Override
 	public GPSState evalRule(GPSState state) throws NotAppliableException {
-		if(ableToEval(state)){
-			List<Position> newBoard = new ArrayList<Position>();
-			newBoard.addAll(state.getBoard());
-			newBoard.add(queen);
+		int[][] newBoard = new int[8][8];
+		if (ableToEval(state)) {
+			newBoard = copyBoard(state.getBoard());
+			newBoard[queen.getRow()][queen.getCol()] = 1;
 			return new GPSStateImpl(newBoard);
 		}
 		throw new NotAppliableException();
 	}
-	
-	private boolean ableToEval(GPSState state){
-		List<Position> board = state.getBoard();
-		if(board.contains(queen)){
+
+	private boolean ableToEval(GPSState state) {
+		int[][] board = state.getBoard();
+		if (board[queen.getRow()][queen.getCol()] == 1) {
 			return false;
 		}
-		if(queenInSameColumn(board) || queenInSameRow(board) || queenInSameDiagonal(board)){
+		if (queenInSameColumn(board) || queenInSameRow(board)
+				|| queenInSameDiagonal(board)) {
 			return false;
 		}
-		return true;		
+		return true;
 	}
-	
-	private boolean queenInSameColumn(List<Position> board){
-		for(Position p:board){
-			if(p.getCol()==queen.getCol()){
+
+	private boolean queenInSameColumn(int[][] board) {
+		for (int i = 0; i < GPSProblemImpl.ROW_SIZE; i++) {
+			if (board[i][queen.getCol()] == 1) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean queenInSameRow(List<Position> board){
-		for(Position p:board){
-			if(p.getRow()==queen.getRow()){
+	private boolean queenInSameRow(int[][] board) {
+		for (int i = 0; i < GPSProblemImpl.COLUMN_SIZE; i++) {
+			if (board[queen.getRow()][i] == 1) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private boolean queenInSameDiagonal(List<Position> board){
-		Position p;
-		for(int i= queen.getRow(), j=queen.getCol(); i>=0 && j< GPSProblemImpl.COLUMN_SIZE; i--, j++){
-			p= new Position(i,j);
-			if(board.contains(p)){
+
+	private boolean queenInSameDiagonal(int[][] board) {
+		for (int i = queen.getRow(), j = queen.getCol(); i >= 0
+				&& j < GPSProblemImpl.COLUMN_SIZE; i--, j++) {
+			if (board[i][j] == 1) {
 				return true;
 			}
 		}
-		for(int i= queen.getRow(), j=queen.getCol(); i<GPSProblemImpl.ROW_SIZE && j< GPSProblemImpl.COLUMN_SIZE; i++, j++){
-			p= new Position(i,j);
-			if(board.contains(p)){
+		for (int i = queen.getRow(), j = queen.getCol(); i < GPSProblemImpl.ROW_SIZE
+				&& j < GPSProblemImpl.COLUMN_SIZE; i++, j++) {
+			if (board[i][j] == 1) {
 				return true;
 			}
 		}
-		for(int i= queen.getRow(), j=queen.getCol(); i>=0 && j>=0; i--, j--){
-			p= new Position(i,j);
-			if(board.contains(p)){
+		for (int i = queen.getRow(), j = queen.getCol(); i >= 0 && j >= 0; i--, j--) {
+			if (board[i][j] == 1) {
 				return true;
 			}
 		}
-		for(int i= queen.getRow(), j=queen.getCol(); i<GPSProblemImpl.ROW_SIZE && j>=0; i++, j--){
-			p= new Position(i,j);
-			if(board.contains(p)){
+		for (int i = queen.getRow(), j = queen.getCol(); i < GPSProblemImpl.ROW_SIZE
+				&& j >= 0; i++, j--) {
+			if (board[i][j] == 1) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	private int[][] copyBoard(int[][] board) {
+		int[][] retBoard = new int[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				retBoard[i][j] = board[i][j];
+			}
+		}
+		return retBoard;
+	}
+
 }

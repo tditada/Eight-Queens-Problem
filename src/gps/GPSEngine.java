@@ -3,13 +3,15 @@ package gps;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+import gps.exception.EndInterruption;
 import gps.exception.NotAppliableException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class GPSEngine {
+//Abstract?
+public class GPSEngine {
 
 	private List<GPSNode> open = new LinkedList<GPSNode>();
 
@@ -20,7 +22,7 @@ public abstract class GPSEngine {
 	// Use this variable in the addNode implementation
 	private SearchStrategy strategy;
 
-	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) {
+	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) throws InterruptedException {
 
 		problem = myProblem;
 		strategy = myStrategy;
@@ -43,8 +45,12 @@ public abstract class GPSEngine {
 					System.out.println(currentNode.getSolution());
 					System.out.println("Expanded nodes: " + explosionCounter);
 				} else {
+//					System.out.println("Explode");
 					explosionCounter++;
-					explode(currentNode);
+					try {
+						explode(currentNode);
+					} catch (EndInterruption e) {
+					}
 				}
 			}
 		}
@@ -56,18 +62,14 @@ public abstract class GPSEngine {
 		}
 	}
 
-//	private  boolean isGoal(GPSNode currentNode) {
-//		return currentNode.getState() != null
-//				&& currentNode.getState().compare(problem.getGoalState());
-//	}
-
-	private  boolean explode(GPSNode node) {
-		if(problem.getRules() == null){
+	private boolean explode(GPSNode node) throws EndInterruption, InterruptedException {
+		if (problem.getRules() == null) {
 			System.err.println("No rules!");
 			return false;
 		}
-		
+
 		for (GPSRule rule : problem.getRules()) {
+//			System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());
@@ -84,10 +86,20 @@ public abstract class GPSEngine {
 				addNode(newNode);
 			}
 		}
+		if(problem.isGoal(node.getState())){
+			System.out.println("Is true");
+			printBoard(node.getState().getBoard());
+			throw new EndInterruption();
+		}
+		open.remove(node);
+		closed.add(node);
+
+//		printBoard(node.getState().getBoard());
+//		 Thread.sleep(1337);
 		return true;
 	}
 
-	private  boolean checkOpenAndClosed(Integer cost, GPSState state) {
+	private boolean checkOpenAndClosed(Integer cost, GPSState state) {
 		for (GPSNode openNode : open) {
 			if (openNode.getState().compare(state) && openNode.getCost() < cost) {
 				return true;
@@ -102,7 +114,7 @@ public abstract class GPSEngine {
 		return false;
 	}
 
-	private  boolean checkBranch(GPSNode parent, GPSState state) {
+	private boolean checkBranch(GPSNode parent, GPSState state) {
 		if (parent == null) {
 			return false;
 		}
@@ -110,7 +122,40 @@ public abstract class GPSEngine {
 				|| state.compare(parent.getState());
 	}
 
-	public abstract  void addNode(GPSNode node); 
-	//IMPLEMENTAR cambia segun la estrategia
+	// IMPLEMENTAR cambia segun la estrategia
+	public void addNode(GPSNode node) throws InterruptedException, EndInterruption {
+		if (strategy == SearchStrategy.DFS) {
+			addNodeDFS(node);
+		} else if (strategy == SearchStrategy.BFS) {
+			addNodeBFS(node);
+		} else if (strategy == SearchStrategy.AStar) {
+			// AStar method
+		} else {
+			// error
+		}
+	}
+
+	private void addNodeBFS(GPSNode node) {
+		open.add(node);
+	}
+	
+	private void addNodeDFS(GPSNode node) throws InterruptedException, EndInterruption{
+//		System.out.println("Add node");
+		open.add(node);
+//		System.out.println(open.size());
+//		printBoard(node.getState().getBoard());
+		explode(node);
+	}
+	
+	private void printBoard(int[][] board){
+		for(int i=0; i<8;i++){
+			for(int j=0;j<8;j++){
+				System.out.print(board[i][j]);
+			}
+			System.out.println("");
+		}
+		System.out.println("");
+		System.out.println("");
+	}
 	
 }

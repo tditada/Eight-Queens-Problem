@@ -21,6 +21,14 @@ public class GPSProblemImpl implements GPSProblem {
 	@Override
 	public List<GPSRule> getRules() {
 		List<GPSRule> rules = new ArrayList<GPSRule>();
+//		rules.add(new GPSRuleImpl(new Position(0,0)));
+//		rules.add(new GPSRuleImpl(new Position(1,4)));
+//		rules.add(new GPSRuleImpl(new Position(2,7)));
+//		rules.add(new GPSRuleImpl(new Position(3,5)));
+//		rules.add(new GPSRuleImpl(new Position(4,2)));
+//		rules.add(new GPSRuleImpl(new Position(5,6)));
+//		rules.add(new GPSRuleImpl(new Position(6,1)));
+//		rules.add(new GPSRuleImpl(new Position(7,3)));
 		for (int i = 0; i < ROW_SIZE; i++) {
 			for (int j = 0; j <COLUMN_SIZE; j++) {
 				GPSRuleImpl rule = new GPSRuleImpl(new Position(i,j));
@@ -36,9 +44,16 @@ public class GPSProblemImpl implements GPSProblem {
 		return 0;
 	}
 
-	@Override
 	public boolean isGoal(GPSState state) {
-		return state.getBoard().size() == QUEENS;
+		int queens=0;
+		for(int i=0; i<GPSProblemImpl.ROW_SIZE;i++){
+			for(int j=0; j<GPSProblemImpl.COLUMN_SIZE;j++){
+				if(state.getBoard()[i][j]==1){
+					queens++;
+				}
+			}
+		}
+		return queens == QUEENS;
 	}
 
 }

@@ -1,35 +1,36 @@
 package gps;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gps.api.GPSState;
 
 
 public class GPSStateImpl implements GPSState {
 	
-//	public static int COLUMN_SIZE = 8;
-//	public static int ROW_SIZE = 8;
-	
-	private List<Position> board = new ArrayList<Position>();
+	private int[][] board = new int[8][8];
 	
 	public GPSStateImpl() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public GPSStateImpl(List<Position> board){
+	public GPSStateImpl(int[][] board){
 		this.board=board;
 	}
 
 	@Override
 	public boolean compare(GPSState state) {
-		return this.getBoard().containsAll(state.getBoard())
-				&& state.getBoard().containsAll(this.getBoard());
+		for(int i=0; i<GPSProblemImpl.ROW_SIZE; i++){
+			for(int j=0; j<GPSProblemImpl.COLUMN_SIZE;j++){
+				if(board[i][j]!=state.getBoard()[i][j]){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
-	public List<Position> getBoard() {
+	public int[][] getBoard() {
 		return board;
 	}
+	
 
 }

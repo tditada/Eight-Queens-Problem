@@ -1,9 +1,5 @@
 package gps.api;
 
-import gps.Position;
-
-import java.util.List;
-
 /**
  * GPSState interface.
  */
@@ -18,6 +14,6 @@ public interface GPSState {
 	 */
 	boolean compare(GPSState state);
 	
-	public List<Position> getBoard(); 
+	public int[][] getBoard(); 
 	
 }
