@@ -3,7 +3,6 @@ package gps;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
-import gps.exception.EndInterruption;
 import gps.exception.NotAppliableException;
 
 import java.util.ArrayList;
@@ -13,16 +12,16 @@ import java.util.List;
 //Abstract?
 public class GPSEngine {
 
-	private List<GPSNode> open = new LinkedList<GPSNode>();
+	private LinkedList<GPSNode> open = new LinkedList<GPSNode>();
 
 	private List<GPSNode> closed = new ArrayList<GPSNode>();
 
 	private GPSProblem problem;
 
-	// Use this variable in the addNode implementation
 	private SearchStrategy strategy;
 
-	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) throws InterruptedException {
+	public void engine(GPSProblem myProblem, SearchStrategy myStrategy)
+			throws InterruptedException {
 
 		problem = myProblem;
 		strategy = myStrategy;
@@ -42,15 +41,12 @@ public class GPSEngine {
 				open.remove(0);
 				if (problem.isGoal(currentNode.getState())) {
 					finished = true;
-					System.out.println(currentNode.getSolution());
+					printBoard(currentNode.getState().getBoard());
+					// System.out.println(currentNode.getSolution());
 					System.out.println("Expanded nodes: " + explosionCounter);
 				} else {
-//					System.out.println("Explode");
 					explosionCounter++;
-					try {
-						explode(currentNode);
-					} catch (EndInterruption e) {
-					}
+					explode(currentNode);
 				}
 			}
 		}
@@ -62,14 +58,13 @@ public class GPSEngine {
 		}
 	}
 
-	private boolean explode(GPSNode node) throws EndInterruption, InterruptedException {
+	private boolean explode(GPSNode node) throws InterruptedException {
 		if (problem.getRules() == null) {
 			System.err.println("No rules!");
 			return false;
 		}
 
 		for (GPSRule rule : problem.getRules()) {
-//			System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());
@@ -86,16 +81,6 @@ public class GPSEngine {
 				addNode(newNode);
 			}
 		}
-		if(problem.isGoal(node.getState())){
-			System.out.println("Is true");
-			printBoard(node.getState().getBoard());
-			throw new EndInterruption();
-		}
-		open.remove(node);
-		closed.add(node);
-
-//		printBoard(node.getState().getBoard());
-//		 Thread.sleep(1337);
 		return true;
 	}
 
@@ -122,8 +107,7 @@ public class GPSEngine {
 				|| state.compare(parent.getState());
 	}
 
-	// IMPLEMENTAR cambia segun la estrategia
-	public void addNode(GPSNode node) throws InterruptedException, EndInterruption {
+	public void addNode(GPSNode node) throws InterruptedException {
 		if (strategy == SearchStrategy.DFS) {
 			addNodeDFS(node);
 		} else if (strategy == SearchStrategy.BFS) {
@@ -138,18 +122,16 @@ public class GPSEngine {
 	private void addNodeBFS(GPSNode node) {
 		open.add(node);
 	}
-	
-	private void addNodeDFS(GPSNode node) throws InterruptedException, EndInterruption{
-//		System.out.println("Add node");
-		open.add(node);
-//		System.out.println(open.size());
-//		printBoard(node.getState().getBoard());
-		explode(node);
+
+	private void addNodeDFS(GPSNode node) throws InterruptedException {
+		//TODO: Check if order can be OKAY without changing engine function 
+		//open.get(open.size()-1)
+		open.addFirst(node); 		
 	}
-	
-	private void printBoard(int[][] board){
-		for(int i=0; i<8;i++){
-			for(int j=0;j<8;j++){
+
+	private void printBoard(int[][] board) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
 				System.out.print(board[i][j]);
 			}
 			System.out.println("");
@@ -157,5 +139,5 @@ public class GPSEngine {
 		System.out.println("");
 		System.out.println("");
 	}
-	
+
 }
