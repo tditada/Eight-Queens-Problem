@@ -39,6 +39,7 @@ public class GPSEngine {
 				GPSNode currentNode = open.get(0);
 				closed.add(currentNode);
 				open.remove(0);
+//				System.out.println(currentNode.getState().getQueens());
 				if (problem.isGoal(currentNode.getState())) {
 					finished = true;
 					printBoard(currentNode.getState().getBoard());

@@ -29,6 +29,7 @@ public class GPSRuleImpl implements GPSRule {
 			newBoard = copyBoard(state.getBoard());
 			newBoard[queen.getRow()][queen.getCol()] = 1;
 			return new GPSStateImpl(newBoard);
+//			return new GPSStateImpl(newBoard, state.getQueens()+1);
 		}
 		throw new NotAppliableException();
 	}

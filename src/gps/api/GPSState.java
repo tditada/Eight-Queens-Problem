@@ -16,4 +16,6 @@ public interface GPSState {
 	
 	public int[][] getBoard(); 
 	
+//	public int getQueens();
+	
 }
