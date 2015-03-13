@@ -1,11 +1,11 @@
 package games;
 import gps.GPSEngine;
-import gps.GPSProblemImpl;
+import gps.GPSQueensProblem;
 import gps.SearchStrategy;
 
 public class EightQueen {
 	public static void main(String[] args) throws InterruptedException {
 		GPSEngine gps = new GPSEngine();
-		gps.engine(new GPSProblemImpl(), SearchStrategy.DFS);
+		gps.engine(new GPSQueensProblem(), SearchStrategy.DFS);
 	}
 }

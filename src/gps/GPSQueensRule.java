@@ -4,10 +4,10 @@ import gps.api.GPSRule;
 import gps.api.GPSState;
 import gps.exception.NotAppliableException;
 
-public class GPSRuleImpl implements GPSRule {
+public class GPSQueensRule implements GPSRule {
 	private Position queen;
 
-	public GPSRuleImpl(Position queen) {
+	public GPSQueensRule(Position queen) {
 		this.queen = queen;
 	}
 
@@ -28,7 +28,7 @@ public class GPSRuleImpl implements GPSRule {
 		if (ableToEval(state)) {
 			newBoard = copyBoard(state.getBoard());
 			newBoard[queen.getRow()][queen.getCol()] = 1;
-			return new GPSStateImpl(newBoard);
+			return new GPSQueensState(newBoard);
 //			return new GPSStateImpl(newBoard, state.getQueens()+1);
 		}
 		throw new NotAppliableException();
@@ -47,7 +47,7 @@ public class GPSRuleImpl implements GPSRule {
 	}
 
 	private boolean queenInSameColumn(int[][] board) {
-		for (int i = 0; i < GPSProblemImpl.ROW_SIZE; i++) {
+		for (int i = 0; i < GPSQueensProblem.ROW_SIZE; i++) {
 			if (board[i][queen.getCol()] == 1) {
 				return true;
 			}
@@ -56,7 +56,7 @@ public class GPSRuleImpl implements GPSRule {
 	}
 
 	private boolean queenInSameRow(int[][] board) {
-		for (int i = 0; i < GPSProblemImpl.COLUMN_SIZE; i++) {
+		for (int i = 0; i < GPSQueensProblem.COLUMN_SIZE; i++) {
 			if (board[queen.getRow()][i] == 1) {
 				return true;
 			}
@@ -66,13 +66,13 @@ public class GPSRuleImpl implements GPSRule {
 
 	private boolean queenInSameDiagonal(int[][] board) {
 		for (int i = queen.getRow(), j = queen.getCol(); i >= 0
-				&& j < GPSProblemImpl.COLUMN_SIZE; i--, j++) {
+				&& j < GPSQueensProblem.COLUMN_SIZE; i--, j++) {
 			if (board[i][j] == 1) {
 				return true;
 			}
 		}
-		for (int i = queen.getRow(), j = queen.getCol(); i < GPSProblemImpl.ROW_SIZE
-				&& j < GPSProblemImpl.COLUMN_SIZE; i++, j++) {
+		for (int i = queen.getRow(), j = queen.getCol(); i < GPSQueensProblem.ROW_SIZE
+				&& j < GPSQueensProblem.COLUMN_SIZE; i++, j++) {
 			if (board[i][j] == 1) {
 				return true;
 			}
@@ -82,7 +82,7 @@ public class GPSRuleImpl implements GPSRule {
 				return true;
 			}
 		}
-		for (int i = queen.getRow(), j = queen.getCol(); i < GPSProblemImpl.ROW_SIZE
+		for (int i = queen.getRow(), j = queen.getCol(); i < GPSQueensProblem.ROW_SIZE
 				&& j >= 0; i++, j--) {
 			if (board[i][j] == 1) {
 				return true;
