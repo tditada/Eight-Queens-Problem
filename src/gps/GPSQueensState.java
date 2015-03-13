@@ -5,28 +5,26 @@ import gps.api.GPSState;
 public class GPSQueensState implements GPSState {
 
 	private int[][] board = new int[8][8];
-//	private int queens = 0;
+
+	// private int queens = 0;
 
 	public GPSQueensState() {
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public GPSQueensState(int[][] board) {
-	this.board = board;
-	for(int i=0;i<GPSQueensProblem.QUEENS;i++){
-		board[0][i]=1;
+		this.board = board;
+
 	}
-}
-	
-//	public int getQueens() {
-//		return queens;
-//	}
-//	
-//	public GPSStateImpl(int[][] board, int queens) {
-//		this.board = board;
-//		this.queens = queens;
-//	}
+
+	// public int getQueens() {
+	// return queens;
+	// }
+	//
+	// public GPSStateImpl(int[][] board, int queens) {
+	// this.board = board;
+	// this.queens = queens;
+	// }
 
 	@Override
 	public boolean compare(GPSState state) {
