@@ -47,6 +47,7 @@ public class GPSEngine {
 					System.out.println("Expanded nodes: " + explosionCounter);
 				} else {
 					explosionCounter++;
+					printBoard(currentNode.getState().getBoard());
 					explode(currentNode);
 				}
 			}

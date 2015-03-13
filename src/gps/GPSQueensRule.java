@@ -40,12 +40,27 @@ public class GPSQueensRule implements GPSRule {
 			return false;
 		}
 		if (queenInSameColumn(board) || queenInSameRow(board)
-				|| queenInSameDiagonal(board)) {
+				|| queenInSameDiagonal(board) || !isUpperAbleRow(board)) {
 			return false;
 		}
 		return true;
 	}
 
+	private boolean isUpperAbleRow(int[][] board){
+		for (int i = 0; i < queen.getRow(); i++) {
+			boolean isQueen=false;
+			for (int j = 0; j < GPSQueensProblem.COLUMN_SIZE; j++) {
+				if(board[i][j]==1){
+					isQueen=true;
+				}
+			}
+			if(!isQueen){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean queenInSameColumn(int[][] board) {
 		for (int i = 0; i < GPSQueensProblem.ROW_SIZE; i++) {
 			if (board[i][queen.getCol()] == 1) {
