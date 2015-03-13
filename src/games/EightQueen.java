@@ -1,3 +1,4 @@
+package games;
 import gps.GPSEngine;
 import gps.GPSProblemImpl;
 import gps.SearchStrategy;
