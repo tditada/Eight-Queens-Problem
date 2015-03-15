@@ -22,7 +22,7 @@ public class GPSProblemImpl implements GPSProblem {
 	public List<GPSRule> getRules() {
 		List<GPSRule> rules = new ArrayList<GPSRule>();
 		for (int i = 0; i < ROW_SIZE; i++) {
-			for (int j = 0; j <COLUMN_SIZE; j++) {
+			for (int j = 0; j < COLUMN_SIZE; j++) {
 				GPSRuleImpl rule = new GPSRuleImpl(new Position(i,j));
 				rules.add(rule);
 			}

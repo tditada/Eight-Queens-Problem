@@ -21,7 +21,8 @@ public class GPSRuleImpl implements GPSRule{
 
 	@Override
 	public String getName() {
-		return "";
+		return "Row: " + String.valueOf(queen.getRow())
+				+ ", Col: " + String.valueOf(queen.getCol());
 	}
 
 	@Override
