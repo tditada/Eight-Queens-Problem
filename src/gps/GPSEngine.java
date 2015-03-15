@@ -11,14 +11,14 @@ import java.util.List;
 
 public abstract class GPSEngine {
 
-	private List<GPSNode> open = new LinkedList<GPSNode>();
+	protected List<GPSNode> open = new LinkedList<GPSNode>();
 
 	private List<GPSNode> closed = new ArrayList<GPSNode>();
 
 	private GPSProblem problem;
 
 	// Use this variable in the addNode implementation
-	private SearchStrategy strategy;
+	protected SearchStrategy strategy;
 
 	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) {
 
@@ -40,7 +40,8 @@ public abstract class GPSEngine {
 				open.remove(0);
 				if (problem.isGoal(currentNode.getState())) {
 					finished = true;
-					System.out.println(currentNode.getSolution());
+					printBoard(currentNode.getState().getBoard());
+//					System.out.println(currentNode.getSolution());
 					System.out.println("Expanded nodes: " + explosionCounter);
 				} else {
 					explosionCounter++;
@@ -110,7 +111,13 @@ public abstract class GPSEngine {
 				|| state.compare(parent.getState());
 	}
 
-	public abstract  void addNode(GPSNode node); 
-	//IMPLEMENTAR cambia segun la estrategia
+	public abstract void addNode(GPSNode node);
+	
+	private void printBoard(List<Position> board) {
+		for(Position p : board){
+			System.out.println("(" + p.getRow() + ", " + p.getCol() + ")");
+			System.out.println("");
+		}
+	}
 	
 }
